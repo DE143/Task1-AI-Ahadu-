@@ -1,0 +1,172 @@
+{
+  "groups": {
+    "group_1_20260402094205": {
+      "id": "group_1_20260402094205",
+      "name": "Family Equb",
+      "fixed_amount": 1000,
+      "frequency": "Monthly",
+      "member_ids": [
+        "member_1_20260402094205",
+        "member_2_20260402094205",
+        "member_3_20260402094205"
+      ],
+      "rounds": [
+        {
+          "round_number": 1,
+          "cycle_number": 1,
+          "date": "2026-04-02 09:42:05",
+          "recipient_id": "member_3_20260402094205",
+          "recipient_name": "Dawit Haile",
+          "amount_per_member": 1000,
+          "total_payout": 3000,
+          "contributions": [
+            {
+              "member_id": "member_1_20260402094205",
+              "member_name": "Abebe Kebede",
+              "amount": 1000,
+              "paid": false
+            },
+            {
+              "member_id": "member_2_20260402094205",
+              "member_name": "Tigist Alemu",
+              "amount": 1000,
+              "paid": false
+            },
+            {
+              "member_id": "member_3_20260402094205",
+              "member_name": "Dawit Haile",
+              "amount": 1000,
+              "paid": false
+            }
+          ],
+          "lottery_selected": false
+        }
+      ],
+      "current_round": 1,
+      "cycle_number": 1,
+      "created_date": "2026-04-02 09:42:05"
+    },
+    "group_2_20260402094205": {
+      "id": "group_2_20260402094205",
+      "name": "Office Equb",
+      "fixed_amount": 500,
+      "frequency": "Weekly",
+      "member_ids": [
+        "member_1_20260402094205",
+        "member_2_20260402094205",
+        "member_4_20260402094205"
+      ],
+      "rounds": [
+        {
+          "round_number": 1,
+          "cycle_number": 1,
+          "date": "2026-04-02 09:42:05",
+          "recipient_id": "member_1_20260402094205",
+          "recipient_name": "Abebe Kebede",
+          "amount_per_member": 500,
+          "total_payout": 1500,
+          "contributions": [
+            {
+              "member_id": "member_1_20260402094205",
+              "member_name": "Abebe Kebede",
+              "amount": 500,
+              "paid": false
+            },
+            {
+              "member_id": "member_2_20260402094205",
+              "member_name": "Tigist Alemu",
+              "amount": 500,
+              "paid": false
+            },
+            {
+              "member_id": "member_4_20260402094205",
+              "member_name": "Sara Tesfaye",
+              "amount": 500,
+              "paid": false
+            }
+          ],
+          "lottery_selected": false
+        }
+      ],
+      "current_round": 1,
+      "cycle_number": 1,
+      "created_date": "2026-04-02 09:42:05"
+    }
+  },
+  "members": {
+    "member_1_20260402094205": {
+      "id": "member_1_20260402094205",
+      "name": "Abebe Kebede",
+      "phone": "0911234567",
+      "email": "",
+      "group_memberships": {
+        "group_1_20260402094205": {
+          "has_received": false,
+          "received_round": null,
+          "total_contributed": 1000.0,
+          "total_received": 0.0,
+          "joined_date": "2026-04-02 09:42:05"
+        },
+        "group_2_20260402094205": {
+          "has_received": true,
+          "received_round": 1,
+          "total_contributed": 500.0,
+          "total_received": 1500.0,
+          "joined_date": "2026-04-02 09:42:05"
+        }
+      }
+    },
+    "member_2_20260402094205": {
+      "id": "member_2_20260402094205",
+      "name": "Tigist Alemu",
+      "phone": "0922345678",
+      "email": "",
+      "group_memberships": {
+        "group_1_20260402094205": {
+          "has_received": false,
+          "received_round": null,
+          "total_contributed": 1000.0,
+          "total_received": 0.0,
+          "joined_date": "2026-04-02 09:42:05"
+        },
+        "group_2_20260402094205": {
+          "has_received": false,
+          "received_round": null,
+          "total_contributed": 500.0,
+          "total_received": 0.0,
+          "joined_date": "2026-04-02 09:42:05"
+        }
+      }
+    },
+    "member_3_20260402094205": {
+      "id": "member_3_20260402094205",
+      "name": "Dawit Haile",
+      "phone": "0933456789",
+      "email": "",
+      "group_memberships": {
+        "group_1_20260402094205": {
+          "has_received": true,
+          "received_round": 1,
+          "total_contributed": 1000.0,
+          "total_received": 3000.0,
+          "joined_date": "2026-04-02 09:42:05"
+        }
+      }
+    },
+    "member_4_20260402094205": {
+      "id": "member_4_20260402094205",
+      "name": "Sara Tesfaye",
+      "phone": "0944567890",
+      "email": "",
+      "group_memberships": {
+        "group_2_20260402094205": {
+          "has_received": false,
+          "received_round": null,
+          "total_contributed": 500.0,
+          "total_received": 0.0,
+          "joined_date": "2026-04-02 09:42:05"
+        }
+      }
+    }
+  }
+}
