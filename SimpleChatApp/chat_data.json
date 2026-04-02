@@ -1,64 +1,18 @@
 {
-  "der": [
+  "derese": [
     {
-      "message": "mn honk",
-      "timestamp": "2026-04-02 11:56:02"
+      "message": "hi almi",
+      "timestamp": "2026-04-02 14:16:12"
     }
   ],
-  "User": [
+  "almi": [
     {
-      "message": "weqwe",
-      "timestamp": "2026-04-02 13:42:38",
+      "message": "hi dere",
+      "timestamp": "2026-04-02 14:17:00",
       "reply_to": {
-        "user": "der",
-        "message": "mn honk"
+        "user": "derese",
+        "message": "hi almi"
       }
-    }
-  ],
-  "abebe": [
-    {
-      "message": "hi",
-      "timestamp": "2026-04-02 13:44:03"
-    }
-  ],
-  "alemu": [
-    {
-      "message": "hi",
-      "timestamp": "2026-04-02 13:51:40"
-    },
-    {
-      "message": "hi",
-      "timestamp": "2026-04-02 13:52:24"
-    },
-    {
-      "message": "hi",
-      "timestamp": "2026-04-02 14:07:46",
-      "reply_to": {
-        "user": "abebe",
-        "message": "hi"
-      }
-    }
-  ],
-  "You": [
-    {
-      "message": "hi",
-      "timestamp": "2026-04-02 14:01:51",
-      "reply_to": {
-        "user": "der",
-        "message": "mn honk"
-      }
-    },
-    {
-      "message": "selam",
-      "timestamp": "2026-04-02 14:03:24",
-      "reply_to": {
-        "user": "abebe",
-        "message": "hi"
-      }
-    },
-    {
-      "message": "hi",
-      "timestamp": "2026-04-02 14:04:00"
     }
   ]
 }

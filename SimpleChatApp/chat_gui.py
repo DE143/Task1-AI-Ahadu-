@@ -6,20 +6,23 @@ Users list on left, chat conversations on right
 import tkinter as tk
 from tkinter import messagebox
 from chat_manager import ChatManager
+from user_auth import UserAuth
 from datetime import datetime
 
 
 class TelegramChatApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Chat App")
-        self.root.geometry("1000x700")
-        self.root.minsize(800, 600)
+        self.root.title("Chat App - Login")
+        self.root.geometry("400x500")
+        self.root.minsize(400, 500)
         
         self.chat_manager = ChatManager()
-        self.current_user = "You"
+        self.user_auth = UserAuth()
+        self.current_user = None
         self.selected_user = None
         self.replying_to = None
+        self.is_logged_in = False
         
         # Telegram color scheme
         self.bg_main = "#17212b"
@@ -33,8 +36,320 @@ class TelegramChatApp:
         self.reply_line = "#5288c1"
         self.selected_bg = "#2b5278"
         
+        self.show_login_page()
+    
+    def show_login_page(self):
+        """Show login/register page"""
+        # Clear window
+        for widget in self.root.winfo_children():
+            widget.destroy()
+        
+        self.root.configure(bg=self.bg_main)
+        
+        # Main container
+        main_frame = tk.Frame(self.root, bg=self.bg_main)
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Logo/Title
+        tk.Label(
+            main_frame,
+            text="💬",
+            font=("Segoe UI", 80),
+            bg=self.bg_main,
+            fg=self.accent_color
+        ).pack(pady=(60, 10))
+        
+        tk.Label(
+            main_frame,
+            text="Chat App",
+            font=("Segoe UI", 28, "bold"),
+            bg=self.bg_main,
+            fg=self.text_primary
+        ).pack(pady=(0, 10))
+        
+        tk.Label(
+            main_frame,
+            text="Connect with friends and family",
+            font=("Segoe UI", 11),
+            bg=self.bg_main,
+            fg=self.text_secondary
+        ).pack(pady=(0, 40))
+        
+        # Login form
+        form_frame = tk.Frame(main_frame, bg=self.bg_main)
+        form_frame.pack(padx=50, pady=20)
+        
+        # Username
+        tk.Label(
+            form_frame,
+            text="Username",
+            font=("Segoe UI", 10),
+            bg=self.bg_main,
+            fg=self.text_secondary,
+            anchor="w"
+        ).pack(anchor="w", pady=(0, 5))
+        
+        self.login_username_entry = tk.Entry(
+            form_frame,
+            font=("Segoe UI", 12),
+            bg="#0d1117",
+            fg=self.text_primary,
+            relief=tk.FLAT,
+            insertbackground=self.text_primary,
+            width=30
+        )
+        self.login_username_entry.pack(ipady=10, pady=(0, 15))
+        self.login_username_entry.focus()
+        
+        # Password
+        tk.Label(
+            form_frame,
+            text="Password",
+            font=("Segoe UI", 10),
+            bg=self.bg_main,
+            fg=self.text_secondary,
+            anchor="w"
+        ).pack(anchor="w", pady=(0, 5))
+        
+        self.login_password_entry = tk.Entry(
+            form_frame,
+            font=("Segoe UI", 12),
+            bg="#0d1117",
+            fg=self.text_primary,
+            relief=tk.FLAT,
+            insertbackground=self.text_primary,
+            show="●",
+            width=30
+        )
+        self.login_password_entry.pack(ipady=10, pady=(0, 25))
+        self.login_password_entry.bind("<Return>", lambda e: self.handle_login())
+        
+        # Login button
+        login_btn = tk.Button(
+            form_frame,
+            text="Log In",
+            font=("Segoe UI", 12, "bold"),
+            bg=self.accent_color,
+            fg=self.text_primary,
+            relief=tk.FLAT,
+            cursor="hand2",
+            command=self.handle_login,
+            width=28,
+            pady=10
+        )
+        login_btn.pack(pady=(0, 15))
+        
+        # Divider
+        tk.Label(
+            form_frame,
+            text="or",
+            font=("Segoe UI", 10),
+            bg=self.bg_main,
+            fg=self.text_secondary
+        ).pack(pady=10)
+        
+        # Register button
+        register_btn = tk.Button(
+            form_frame,
+            text="Create New Account",
+            font=("Segoe UI", 11),
+            bg="#1a2633",
+            fg=self.text_primary,
+            relief=tk.FLAT,
+            cursor="hand2",
+            command=self.show_register_page,
+            width=28,
+            pady=10
+        )
+        register_btn.pack(pady=(10, 0))
+    
+    def show_register_page(self):
+        """Show registration page"""
+        # Clear window
+        for widget in self.root.winfo_children():
+            widget.destroy()
+        
+        self.root.configure(bg=self.bg_main)
+        
+        # Main container
+        main_frame = tk.Frame(self.root, bg=self.bg_main)
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Back button
+        back_btn = tk.Label(
+            main_frame,
+            text="← Back",
+            font=("Segoe UI", 11),
+            bg=self.bg_main,
+            fg=self.accent_color,
+            cursor="hand2"
+        )
+        back_btn.pack(anchor="w", padx=20, pady=20)
+        back_btn.bind("<Button-1>", lambda e: self.show_login_page())
+        
+        # Title
+        tk.Label(
+            main_frame,
+            text="Create Account",
+            font=("Segoe UI", 24, "bold"),
+            bg=self.bg_main,
+            fg=self.text_primary
+        ).pack(pady=(20, 10))
+        
+        tk.Label(
+            main_frame,
+            text="Sign up to start chatting",
+            font=("Segoe UI", 11),
+            bg=self.bg_main,
+            fg=self.text_secondary
+        ).pack(pady=(0, 30))
+        
+        # Register form
+        form_frame = tk.Frame(main_frame, bg=self.bg_main)
+        form_frame.pack(padx=50, pady=20)
+        
+        # Username
+        tk.Label(
+            form_frame,
+            text="Choose a Username",
+            font=("Segoe UI", 10),
+            bg=self.bg_main,
+            fg=self.text_secondary,
+            anchor="w"
+        ).pack(anchor="w", pady=(0, 5))
+        
+        self.register_username_entry = tk.Entry(
+            form_frame,
+            font=("Segoe UI", 12),
+            bg="#0d1117",
+            fg=self.text_primary,
+            relief=tk.FLAT,
+            insertbackground=self.text_primary,
+            width=30
+        )
+        self.register_username_entry.pack(ipady=10, pady=(0, 15))
+        self.register_username_entry.focus()
+        
+        # Password
+        tk.Label(
+            form_frame,
+            text="Create a Password",
+            font=("Segoe UI", 10),
+            bg=self.bg_main,
+            fg=self.text_secondary,
+            anchor="w"
+        ).pack(anchor="w", pady=(0, 5))
+        
+        self.register_password_entry = tk.Entry(
+            form_frame,
+            font=("Segoe UI", 12),
+            bg="#0d1117",
+            fg=self.text_primary,
+            relief=tk.FLAT,
+            insertbackground=self.text_primary,
+            show="●",
+            width=30
+        )
+        self.register_password_entry.pack(ipady=10, pady=(0, 15))
+        
+        # Confirm Password
+        tk.Label(
+            form_frame,
+            text="Confirm Password",
+            font=("Segoe UI", 10),
+            bg=self.bg_main,
+            fg=self.text_secondary,
+            anchor="w"
+        ).pack(anchor="w", pady=(0, 5))
+        
+        self.register_confirm_entry = tk.Entry(
+            form_frame,
+            font=("Segoe UI", 12),
+            bg="#0d1117",
+            fg=self.text_primary,
+            relief=tk.FLAT,
+            insertbackground=self.text_primary,
+            show="●",
+            width=30
+        )
+        self.register_confirm_entry.pack(ipady=10, pady=(0, 25))
+        self.register_confirm_entry.bind("<Return>", lambda e: self.handle_register())
+        
+        # Register button
+        register_btn = tk.Button(
+            form_frame,
+            text="Sign Up",
+            font=("Segoe UI", 12, "bold"),
+            bg=self.accent_color,
+            fg=self.text_primary,
+            relief=tk.FLAT,
+            cursor="hand2",
+            command=self.handle_register,
+            width=28,
+            pady=10
+        )
+        register_btn.pack()
+    
+    def handle_login(self):
+        """Handle login attempt"""
+        username = self.login_username_entry.get().strip()
+        password = self.login_password_entry.get().strip()
+        
+        if not username or not password:
+            messagebox.showwarning("Login Failed", "Please enter both username and password")
+            return
+        
+        if self.user_auth.login_user(username, password):
+            self.current_user = username
+            self.is_logged_in = True
+            self.start_chat_app()
+        else:
+            messagebox.showerror("Login Failed", "Invalid username or password")
+            self.login_password_entry.delete(0, tk.END)
+    
+    def handle_register(self):
+        """Handle registration attempt"""
+        username = self.register_username_entry.get().strip()
+        password = self.register_password_entry.get().strip()
+        confirm = self.register_confirm_entry.get().strip()
+        
+        if not username or not password or not confirm:
+            messagebox.showwarning("Registration Failed", "Please fill in all fields")
+            return
+        
+        if len(username) < 3:
+            messagebox.showwarning("Registration Failed", "Username must be at least 3 characters")
+            return
+        
+        if len(password) < 4:
+            messagebox.showwarning("Registration Failed", "Password must be at least 4 characters")
+            return
+        
+        if password != confirm:
+            messagebox.showwarning("Registration Failed", "Passwords do not match")
+            return
+        
+        if self.user_auth.user_exists(username):
+            messagebox.showwarning("Registration Failed", "Username already exists")
+            return
+        
+        if self.user_auth.register_user(username, password):
+            messagebox.showinfo("Success", "Account created successfully!\nYou can now log in.")
+            self.show_login_page()
+        else:
+            messagebox.showerror("Registration Failed", "Failed to create account")
+    
+    def start_chat_app(self):
+        """Start the main chat application"""
+        self.root.title("Chat App")
+        self.root.geometry("1000x700")
+        self.root.minsize(800, 600)
+        
+        # Clear login page
+        for widget in self.root.winfo_children():
+            widget.destroy()
+        
         self.setup_ui()
-        self.show_username_dialog()
         self.auto_refresh()
     
     def setup_ui(self):
@@ -60,6 +375,7 @@ class TelegramChatApp:
             cursor="hand2"
         )
         menu_btn.pack(side=tk.LEFT, padx=15, pady=15)
+        menu_btn.bind("<Button-1>", lambda e: self.show_menu())
         
         # New chat button
         new_chat_btn = tk.Label(
@@ -394,6 +710,71 @@ class TelegramChatApp:
         
         self.user_list_frame.update_idletasks()
     
+    def show_menu(self):
+        """Show menu with logout option"""
+        menu = tk.Menu(self.root, tearoff=0, bg=self.bg_main, fg=self.text_primary, 
+                      activebackground=self.accent_color, activeforeground=self.text_primary,
+                      font=("Segoe UI", 10))
+        
+        menu.add_command(label=f"👤 Logged in as: {self.current_user}", state="disabled")
+        menu.add_separator()
+        menu.add_command(label="⚙️ Settings", command=self.show_settings)
+        menu.add_command(label="🗑️ Clear All Chats", command=self.clear_all_chats)
+        menu.add_separator()
+        menu.add_command(label="🚪 Logout", command=self.logout)
+        
+        # Get the position of the menu button
+        try:
+            x = self.root.winfo_x() + 20
+            y = self.root.winfo_y() + 80
+            menu.post(x, y)
+        except:
+            menu.post(self.root.winfo_pointerx(), self.root.winfo_pointery())
+    
+    def show_settings(self):
+        """Show settings dialog"""
+        messagebox.showinfo("Settings", f"Logged in as: {self.current_user}\n\nMore settings coming soon!")
+    
+    def clear_all_chats(self):
+        """Clear all chat messages"""
+        result = messagebox.askyesno(
+            "Clear All Chats",
+            "Are you sure you want to delete all your messages?\n\nThis action cannot be undone."
+        )
+        
+        if result:
+            if self.chat_manager.clear_chat():
+                self.selected_user = None
+                self.load_user_list()
+                self.show_welcome_screen()
+                messagebox.showinfo("Success", "All chats have been cleared!")
+    
+    def logout(self):
+        """Logout current user"""
+        result = messagebox.askyesno(
+            "Logout",
+            f"Are you sure you want to logout?\n\nYou are currently logged in as: {self.current_user}"
+        )
+        
+        if result:
+            # Reset user state
+            self.current_user = None
+            self.selected_user = None
+            self.replying_to = None
+            self.is_logged_in = False
+            
+            # Stop auto-refresh
+            if hasattr(self, 'refresh_job'):
+                self.root.after_cancel(self.refresh_job)
+            
+            # Reset window size
+            self.root.geometry("400x500")
+            self.root.minsize(400, 500)
+            self.root.title("Chat App - Login")
+            
+            # Show login page
+            self.show_login_page()
+    
     def show_new_chat_dialog(self):
         """Show dialog to start a new chat with someone"""
         dialog = tk.Toplevel(self.root)
@@ -450,63 +831,6 @@ class TelegramChatApp:
         btn.pack(pady=10)
         
         name_entry.bind("<Return>", lambda e: start_chat())
-    
-    def show_username_dialog(self):
-        """Show username input dialog"""
-        dialog = tk.Toplevel(self.root)
-        dialog.title("Enter Your Name")
-        dialog.geometry("350x150")
-        dialog.configure(bg=self.bg_main)
-        dialog.transient(self.root)
-        dialog.grab_set()
-        
-        x = (dialog.winfo_screenwidth() // 2) - (175)
-        y = (dialog.winfo_screenheight() // 2) - (75)
-        dialog.geometry(f"350x150+{x}+{y}")
-        
-        tk.Label(
-            dialog,
-            text="What's your name?",
-            font=("Segoe UI", 13, "bold"),
-            bg=self.bg_main,
-            fg=self.text_primary
-        ).pack(pady=(20, 10))
-        
-        name_entry = tk.Entry(
-            dialog,
-            font=("Segoe UI", 12),
-            bg="#0d1117",
-            fg=self.text_primary,
-            relief=tk.FLAT,
-            insertbackground=self.text_primary
-        )
-        name_entry.pack(padx=30, pady=10, ipady=8, fill=tk.X)
-        name_entry.insert(0, self.current_user)
-        name_entry.focus()
-        name_entry.select_range(0, tk.END)
-        
-        def save_name():
-            name = name_entry.get().strip()
-            if name:
-                self.current_user = name
-                dialog.destroy()
-                self.load_user_list()
-        
-        btn = tk.Button(
-            dialog,
-            text="Start Chatting",
-            font=("Segoe UI", 10, "bold"),
-            bg=self.accent_color,
-            fg=self.text_primary,
-            relief=tk.FLAT,
-            cursor="hand2",
-            command=save_name,
-            padx=20,
-            pady=8
-        )
-        btn.pack(pady=10)
-        
-        name_entry.bind("<Return>", lambda e: save_name())
     
     def update_send_button(self, event=None):
         """Update send button icon"""
@@ -737,10 +1061,11 @@ class TelegramChatApp:
     
     def auto_refresh(self):
         """Auto-refresh"""
-        self.load_user_list()
-        if self.selected_user:
-            self.load_messages()
-        self.root.after(3000, self.auto_refresh)
+        if self.is_logged_in:
+            self.load_user_list()
+            if self.selected_user:
+                self.load_messages()
+            self.refresh_job = self.root.after(3000, self.auto_refresh)
 
 
 def main():
