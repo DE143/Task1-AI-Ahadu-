@@ -1,0 +1,24 @@
+# Core Data Science Libraries
+pandas
+numpy
+scipy
+
+# Visualization
+matplotlib
+seaborn
+plotly
+
+# Jupyter Environment
+jupyter
+ipywidgets
+
+# Statistical Analysis
+statsmodels
+scikit-learn
+
+# Data Quality and Profiling
+pandas-profiling
+
+# Utilities
+openpyxl
+xlrd
